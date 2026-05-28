@@ -1,6 +1,9 @@
 ---
 name: orchestrate
-description: Main model to coordinate subagents to use when executing implementation plans with independent tasks in the current session
+description: |
+  승인된 implementation plan을 여러 독립 task로 실행할 때만 사용한다.
+  각 task를 fresh subagent에 위임하고 spec review, code quality review를 수행한다.
+  단일 파일 수정, 작은 버그 수정, 오타/타입/CSS 수정, minimal diff 요청에는 사용하지 않는다.
 ---
 
 # /orchestrate — 서브 에이전트 오케스트레이션
@@ -11,7 +14,7 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 
 **Core principle:** Fresh subagent per task + two-stage review (spec then quality) = high quality, fast iteration
 
-**Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are: BLOCKED status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete. "Should I continue?" prompts and progress summaries waste their time — they asked you to execute the plan, so execute it.
+**Continuous execution:** Once this skill is explicitly selected and the implementation plan is approved, do not pause between planned tasks unless there is a BLOCKED status, a scope risk, a destructive change, or ambiguity that genuinely prevents progress. This rule does not apply to small changes, unclear plans, or requests that emphasize minimal diff.
 
 ## When to Use
 
@@ -51,7 +54,7 @@ digraph process {
         "Dispatch implementer subagent (./implementer-prompt.md)" [shape=box];
         "Implementer subagent asks questions?" [shape=diamond];
         "Answer questions, provide context" [shape=box];
-        "Implementer subagent implements, tests, commits, self-reviews" [shape=box];
+        "Implementer subagent implements, runs appropriate validation, self-reviews" [shape=box];
         "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [shape=box];
         "Spec reviewer subagent confirms code matches spec?" [shape=diamond];
         "Implementer subagent fixes spec gaps" [shape=box];
@@ -70,8 +73,8 @@ digraph process {
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
     "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
     "Answer questions, provide context" -> "Dispatch implementer subagent (./implementer-prompt.md)";
-    "Implementer subagent asks questions?" -> "Implementer subagent implements, tests, commits, self-reviews" [label="no"];
-    "Implementer subagent implements, tests, commits, self-reviews" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)";
+    "Implementer subagent asks questions?" -> "Implementer subagent implements, runs appropriate validation, self-reviews" [label="no"];
+    "Implementer subagent implements, runs appropriate validation, self-reviews" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)";
     "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" -> "Spec reviewer subagent confirms code matches spec?";
     "Spec reviewer subagent confirms code matches spec?" -> "Implementer subagent fixes spec gaps" [label="no"];
     "Implementer subagent fixes spec gaps" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [label="re-review"];
@@ -208,7 +211,7 @@ Done!
 
 **vs. Manual execution:**
 
-- Subagents follow TDD naturally
+- Subagents validate changes according to risk and existing project conventions
 - Fresh context per task (no confusion)
 - Parallel-safe (subagents don't interfere)
 - Subagent can ask questions (before AND during work)
@@ -278,9 +281,22 @@ Done!
 
 ## Integration
 
-**Required workflow:**
+The original workflow references other Superpowers skills. In this repo, treat them as concepts, not hard dependencies.
 
-- **using-git-worktrees** - Ensures isolated workspace (creates one or verifies existing)
-- **writing-plans** - Creates the plan this skill executes
-- **requesting-code-review** - Code review template for reviewer subagents
-- **finishing-a-development-branch** - Complete development after all tasks
+Concept mapping:
+
+- `using-git-worktrees`
+  - Prefer an isolated workspace when available.
+  - If not available, clearly track changed files and avoid unrelated edits.
+
+- `writing-plans`
+  - Use the approved implementation plan from the current session or a plan file provided by the user.
+  - If no approved plan exists, do not use this skill. Use `/interview-me` or create a short plan first.
+
+- `requesting-code-review`
+  - Use a spec reviewer and a code quality reviewer subagent.
+  - Review should focus on the approved spec, minimal diff, correctness, and project conventions.
+
+- `finishing-a-development-branch`
+  - Finish by summarizing completed tasks, changed files, validation results, known risks, and follow-up items.
+  - Do not assume branch management or commits unless explicitly requested.
