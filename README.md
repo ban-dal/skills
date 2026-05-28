@@ -1,48 +1,18 @@
-# claude-smart-agent
+# ban-dal/skills
 
-A lightweight Claude Code plugin. Makes the main model proportionate, interview-first, and smart about sub-agent delegation.
+Claude Code, Codex 등 AI 코딩 에이전트용 스킬 컬렉션입니다.
 
-## Install
-
-```bash
-npx claude-smart-agent
-```
-
-## Uninstall
+## 설치
 
 ```bash
-npx claude-smart-agent uninstall
+npx skills ban-dal/skills
 ```
 
-Restart Claude Code to apply changes.
+## 스킬 목록
 
-## Behaviors
-
-| Behavior | Trigger | Description |
-|----------|---------|-------------|
-| **Proportionality** | Every request | Matches effort to scope — tiny fix → fix directly, large change → plan first |
-| **Auto-interview** | Ambiguous request | Asks 2–4 clarifying questions before writing any code |
-| **Grill mode** | "grill me" / `/grill` | Deep 6–10 question requirements elicitation |
-| **Smart delegation** | Complex tasks | Spawns planning or review sub-agents with the right model |
-
-## How it works
-
-- Appends behavioral rules to `~/.claude/CLAUDE.md` (global — applies to all projects)
-- Installs the `/grill` skill to `~/.claude/agents/skills/grill/`
-
-## Proportionality table
-
-| Intent       | ≤ 2 files      | 3–5 files             | 6+ files              |
-|--------------|----------------|-----------------------|-----------------------|
-| bug fix      | fix directly   | fix directly          | spawn planner (sonnet)|
-| feature      | brief plan     | spawn planner (sonnet)| spawn planner (opus)  |
-| refactor     | brief plan     | spawn planner (sonnet)| spawn planner (opus)  |
-| architecture | spawn planner  | spawn planner (opus)  | spawn planner (opus)  |
-
-## Sub-agent model guide
-
-| Model  | Use for |
-|--------|---------|
-| haiku  | lookups, grep, formatting checks |
-| sonnet | standard planning, code review |
-| opus   | architecture, ambiguous requirements, deep debugging |
+| 스킬 | 설명 |
+| ---- | ---- |
+| `/quality` | Karpathy 스타일 코드 품질 원칙 — 단순함, 읽기 우선, 범위 고정 |
+| `/interview-me` | 구현 전 구조화된 요구사항 인터뷰 (6–10개 질문 일괄 도출) |
+| `/llm-wiki` | LLM 개념 즉시 참조 — 모델 선택, 프롬프팅 기법, RAG |
+| `/orchestrate` | 서브 에이전트 자율 위임 — plan, brainstorm, review |
