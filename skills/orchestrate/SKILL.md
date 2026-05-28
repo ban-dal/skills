@@ -1,3 +1,8 @@
+---
+name: orchestrate
+description: 메인 모델이 자체 판단으로 서브 에이전트를 소환해 복잡한 작업을 위임합니다. plan, brainstorm, code-review 등 독립 처리 가능한 작업을 분리할 때 사용합니다.
+---
+
 # /orchestrate — 서브 에이전트 위임
 
 메인 모델이 자체 판단으로 서브 에이전트를 소환해 작업을 수행합니다.

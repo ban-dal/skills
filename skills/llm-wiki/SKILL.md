@@ -1,3 +1,8 @@
+---
+name: llm-wiki
+description: LLM 개념, 모델 선택, 프롬프팅 기법, RAG 전략을 즉시 참조합니다. LLM API 선택, 프롬프트 설계, 아키텍처 결정이 필요할 때 사용합니다.
+---
+
 # /llm-wiki — LLM 지식 참조
 
 LLM 관련 개념, 기법, 모델 특성을 즉시 참조합니다.
