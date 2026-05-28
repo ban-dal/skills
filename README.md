@@ -2,6 +2,20 @@
 
 A lightweight Claude Code plugin. Makes the main model proportionate, interview-first, and smart about sub-agent delegation.
 
+## Install
+
+```bash
+npx claude-smart-agent
+```
+
+## Uninstall
+
+```bash
+npx claude-smart-agent uninstall
+```
+
+Restart Claude Code to apply changes.
+
 ## Behaviors
 
 | Behavior | Trigger | Description |
@@ -11,28 +25,10 @@ A lightweight Claude Code plugin. Makes the main model proportionate, interview-
 | **Grill mode** | "grill me" / `/grill` | Deep 6–10 question requirements elicitation |
 | **Smart delegation** | Complex tasks | Spawns planning or review sub-agents with the right model |
 
-## Install
-
-```bash
-git clone https://github.com/YOUR_USERNAME/claude-smart-agent.git ~/Documents/skills/claude-smart-agent
-cd ~/Documents/skills/claude-smart-agent
-chmod +x install.sh uninstall.sh
-./install.sh
-```
-
-Restart Claude Code to apply.
-
-## Uninstall
-
-```bash
-./uninstall.sh
-```
-
 ## How it works
 
 - Appends behavioral rules to `~/.claude/CLAUDE.md` (global — applies to all projects)
 - Installs the `/grill` skill to `~/.claude/agents/skills/grill/`
-- No dependencies, no Node.js required
 
 ## Proportionality table
 
@@ -50,7 +46,3 @@ Restart Claude Code to apply.
 | haiku  | lookups, grep, formatting checks |
 | sonnet | standard planning, code review |
 | opus   | architecture, ambiguous requirements, deep debugging |
-
-## Background
-
-Built as a lighter alternative to superpowers. Avoids: running TDD on simple changes, over-engineering small fixes, refactoring outside the requested scope.
