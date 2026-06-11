@@ -8,6 +8,10 @@ Task tool (general-purpose):
   prompt: |
     You are implementing Task N: [task name]
 
+    You are a subagent dispatched to execute this specific task. Do not invoke
+    interview, brainstorming, planning, or user-approval skills — the plan is
+    already approved. Asking the controller clarifying questions is fine.
+
     ## Task Description
 
     [FULL TEXT of task from plan - paste it here, don't make subagent read file]

@@ -271,8 +271,13 @@ Done!
 
 - Implementer (same subagent) fixes them
 - Reviewer reviews again
-- Repeat until approved
 - Don't skip the re-review
+- Only Critical and Important issues block approval. Style preferences and
+  formatting are not grounds for rejection — record them as Minor and move on.
+- **Maximum 3 review iterations per reviewer per task.** If still unapproved
+  after 3 rounds, stop the loop and escalate to the human with the remaining
+  issues and both sides' reasoning. Endless review loops burn tokens without
+  converging — a disagreement that survives 3 rounds needs a human decision.
 
 **If subagent fails task:**
 
@@ -286,8 +291,18 @@ The original workflow references other Superpowers skills. In this repo, treat t
 Concept mapping:
 
 - `using-git-worktrees`
-  - Prefer an isolated workspace when available.
-  - If not available, clearly track changed files and avoid unrelated edits.
+  - Detect existing isolation first: if `git rev-parse --git-dir` differs from
+    `git rev-parse --git-common-dir` (and you are not in a submodule), you are
+    already in a linked worktree — do not create another.
+  - Prefer the harness's native worktree tool (e.g. `EnterWorktree`, a
+    `/worktree` command) over manual `git worktree add`. Manual worktrees
+    create state the harness can't see or manage.
+  - **Ask the user for consent before creating any worktree.** Honor a
+    previously stated preference without asking. If declined, work in place.
+  - Clean up only worktrees this workflow created (e.g. under `.worktrees/`).
+    Never remove a worktree the user created.
+  - If no isolation is available, clearly track changed files and avoid
+    unrelated edits.
 
 - `writing-plans`
   - Use the approved implementation plan from the current session or a plan file provided by the user.

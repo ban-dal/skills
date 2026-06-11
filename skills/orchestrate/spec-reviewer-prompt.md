@@ -10,6 +10,9 @@ Task tool (general-purpose):
   prompt: |
     You are reviewing whether an implementation matches its specification.
 
+    You are a subagent dispatched for a specific review task. Do not invoke
+    interview, planning, or approval skills — review the code and report.
+
     ## What Was Requested
 
     [FULL TEXT of task requirements]
