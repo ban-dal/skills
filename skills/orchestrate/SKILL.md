@@ -1,9 +1,10 @@
 ---
 name: orchestrate
 description: |
-  승인된 implementation plan을 여러 독립 task로 실행할 때만 사용한다.
-  각 task를 fresh subagent에 위임하고 spec review, code quality review를 수행한다.
-  단일 파일 수정, 작은 버그 수정, 오타/타입/CSS 수정, minimal diff 요청에는 사용하지 않는다.
+  여러 독립 task를 fresh subagent들로 계획, 실행, spec review, code quality review까지 오케스트레이션하는 스킬이다.
+  Trigger: interview-me가 요구사항, 범위, 제약, 완료 기준을 정리한 직후 반드시 사용한다.
+  Trigger: 사용자가 implementation plan, task breakdown, 또는 여러 독립 작업으로 나뉜 명확한 spec을 이미 제공한 경우 사용한다.
+  Do not use: 단일 파일 수정, 작은 버그 수정, 오타/타입/CSS 수정, tightly coupled change, minimal diff 요청에는 사용하지 않는다.
 ---
 
 # /orchestrate — 서브 에이전트 오케스트레이션
