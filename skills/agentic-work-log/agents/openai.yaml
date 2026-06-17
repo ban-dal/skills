@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agentic Work Log"
+  short_description: "Record AI coding work for review"
+  default_prompt: "Use $agentic-work-log to create a compact Korean work log for this AI coding task."
