@@ -1,86 +1,83 @@
 ---
 name: llm-wiki
-description: |
-  로컬 LLM Wiki를 지식베이스로 초기화, 조회, 수집, 정리, 품질 점검한다.
-  사용자가 "위키에서 찾아봐", "예전에 정리한 것 기준으로", "add to wiki", "LLM wiki", "기록해줘"라고 말하거나 작업이 과거 맥락, 의사결정, 트러블슈팅, 운영 장애, 재사용 가능한 프롬프트/워크플로우에 의존할 때 사용한다.
-  개발 중 재사용 가치가 있는 맥락을 발견하면 Ingest -> Lint 루프로 기존 지식을 탐색·수정하고 log.md에 기록한다.
+description: Search, ingest, organize, archive, and quality-check the local LLM Wiki knowledge base. Use when the user asks to use wiki knowledge, rely on past context, record reusable decisions, troubleshooting, workflows, or prompts, including Korean triggers such as "위키에서 찾아봐", "예전에 정리한 것 기준으로", "add to wiki", "LLM wiki", or "기록해줘".
 ---
 
 # /llm-wiki
 
-로컬 LLM Wiki를 Agent가 읽고, 갱신하고, 검증하는 절차다. Wiki는 Agent가 다음 작업에서 다시 찾고 합성할 수 있는 지속 지식베이스다.
+Use this workflow to read, update, and verify the local LLM Wiki. The Wiki is a persistent knowledge base that future agents can search and synthesize.
 
 ## Mode
 
-먼저 작업 모드를 고른다.
+Choose one mode first.
 
-- Query: 기존 지식을 읽고 답한다. 항상 read-only다.
-- Ingest: 새 source나 작업 결과를 지식베이스에 반영한다. 사용자가 저장을 요청했거나, 사용자가 사전에 Wiki maintenance를 허용했을 때만 쓴다.
-- Archive: Query 답변이나 대화 결과를 point-in-time 문서로 저장한다. 기존 article에 병합하지 않는다.
-- Lint: Ingest 또는 Archive 뒤에 수행한다. 기본 범위는 이번 작업에서 건드린 topic과 `wiki/index.md`, `wiki/log.md`다. 전역 색인 불일치는 발견한 범위 안에서만 자동 수정하고, 전체 스캔이 필요하면 보고한다.
+- Query: Read existing knowledge and answer. Always read-only.
+- Ingest: Add new sources or task outcomes to the knowledge base. Use only when the user asks to save knowledge, or when prior Wiki maintenance permission exists.
+- Archive: Save a Query answer or conversation result as a point-in-time document. Do not merge it into an existing article.
+- Lint: Run after Ingest or Archive. Default scope is the touched topic plus `wiki/index.md` and `wiki/log.md`. Fix global index inconsistencies only within the discovered scope; report when a full scan is needed.
 
 ## Root
 
-기본 위치는 `~/Documents/wiki`다. 없으면 사용자에게 위치를 묻는다. 첫 write 전에는 root가 맞는지 확인하고, 현재 환경에서 허용되지 않는 경로라면 승인을 받는다.
+Default root is `~/Documents/wiki`. If it does not exist, ask the user for the location. Before the first write, confirm the root is correct; request approval if the current environment cannot write there.
 
 ```text
-raw/          # 원본 자료. 보존용, 재작성 금지
-wiki/         # 가공된 지식 문서. Agent가 갱신
-wiki/index.md # 전역 색인
-wiki/log.md   # append-only 작업 로그
+raw/           # Preserved source material; do not rewrite
+wiki/          # Processed knowledge documents updated by agents
+wiki/index.md  # Global index
+wiki/log.md    # Append-only work log
 ```
 
 ## Initialization
 
-첫 Ingest 전에 `raw/`, `wiki/`, `wiki/index.md`, `wiki/log.md`를 생성한다. 이미 있는 파일은 덮어쓰지 않는다.
+Before the first Ingest, create `raw/`, `wiki/`, `wiki/index.md`, and `wiki/log.md`. Do not overwrite existing files.
 
 - `wiki/index.md`: `# Knowledge Base Index`
 - `wiki/log.md`: `# Wiki Log`
-- Query 또는 Lint 중 구조가 없으면 자동 생성하지 말고 "먼저 Ingest로 Wiki를 초기화해야 한다"고 알린다.
+- During Query or Lint, if the structure is missing, do not create it automatically. Say that the Wiki must be initialized with Ingest first.
 
 ## Query
 
-질문에 답하거나 과거 맥락이 필요한 작업을 시작할 때 수행한다.
+Use Query when answering from past knowledge or when a task needs historical context.
 
-1. `wiki/index.md`를 먼저 읽는다.
-2. 관련 문서와 같은 topic의 인접 문서를 읽는다.
-3. 필요하면 `raw/` 원본을 확인하되, 답변에는 필요한 핵심만 합성한다.
-4. Wiki와 현재 repo 코드가 충돌하면 충돌을 밝히고 현재 코드와 실행 결과를 우선한다.
-5. 대화 답변에는 참고한 wiki 문서를 project-root-relative markdown link로 짧게 남긴다.
+1. Read `wiki/index.md` first.
+2. Read relevant documents and nearby documents in the same topic.
+3. Check original material in `raw/` when needed, but synthesize only the essential points in the answer.
+4. If Wiki knowledge conflicts with the current repo code, state the conflict and prefer current code plus execution results.
+5. In the final response, briefly cite referenced wiki documents with project-root-relative Markdown links.
 
-Plain Query는 파일을 쓰지 않는다.
+Plain Query never writes files.
 
 ## Ingest
 
-새 지식, 작업 결과, 사용자 요청으로 저장할 가치가 있는 맥락이 생기면 수행한다. Ingest는 항상 `raw` 저장과 `wiki` 반영을 함께 한다.
+Use Ingest when new knowledge, task results, or user-requested durable context should be saved. Ingest always stores raw material and updates processed wiki knowledge together.
 
 ### Plan target
 
-쓰기 전에 기존 지식을 먼저 탐색한다.
+Search existing knowledge before writing.
 
-1. `wiki/index.md`를 읽는다.
-2. 관련 topic, claim, slug를 `wiki/`에서 검색한다.
-3. 결과를 `merge existing article`, `create new article`, `archive answer` 중 하나로 분류한다.
-4. 쓸 raw 경로와 wiki 경로를 정한다. 기존 `raw/` 파일은 덮어쓰거나 삭제하지 않는다.
+1. Read `wiki/index.md`.
+2. Search `wiki/` for related topics, claims, and slugs.
+3. Classify the write as `merge existing article`, `create new article`, or `archive answer`.
+4. Choose the raw path and wiki path. Never overwrite or delete existing `raw/` files.
 
 ### Capture raw
 
-1. source가 URL, 파일, 대화, 실행 로그 중 무엇인지 식별한다.
-2. 가장 가까운 `raw/<topic>/`을 재사용하고, 뚜렷이 다를 때만 새 topic을 만든다.
-3. `raw/<topic>/YYYY-MM-DD-descriptive-slug.md`로 저장한다. 날짜를 모르면 slug만 쓴다.
-4. 원문, 출처, 수집일, 발행일(모르면 `Unknown`)을 보존한다. 의견이나 실패 기록을 미화하지 않는다.
+1. Identify whether the source is a URL, file, conversation, or execution log.
+2. Reuse the nearest `raw/<topic>/`; create a new topic only when the source clearly belongs elsewhere.
+3. Save as `raw/<topic>/YYYY-MM-DD-descriptive-slug.md`. If the date is unknown, use the slug only.
+4. Preserve original content, source, capture date, and published date. Use `Unknown` when the published date is unknown. Do not sanitize opinions or failed attempts.
 
 ### Compile wiki
 
-1. 같은 핵심 주장이나 절차가 이미 있으면 기존 `wiki/<topic>/<article>.md`에 병합한다.
-2. 새 개념이면 개념명을 파일명으로 새 문서를 만든다.
-3. 여러 topic에 걸치면 가장 중심 topic에 두고 `See Also`로 연결한다.
-4. 기존 지식과 충돌하면 삭제하지 말고 출처별 차이를 문서에 표시한다.
-5. 관련 문서가 영향을 받으면 cascade update한다. archive 성격의 문서는 point-in-time 기록으로 두고 갱신하지 않는다.
+1. Merge into an existing `wiki/<topic>/<article>.md` when the same core claim or procedure already exists.
+2. Create a new document named after the concept for new concepts.
+3. For cross-topic material, place it under the primary topic and link related material in `See Also`.
+4. When sources conflict, do not delete either claim; mark the source-specific differences.
+5. Cascade updates to affected related documents. Leave archive-style documents as point-in-time records.
 
 ## Article Format
 
-문서는 짧고 검색 가능해야 한다.
+Keep documents short and searchable.
 
 ```md
 # Title
@@ -107,10 +104,10 @@ Raw: ../../raw/topic/source.md
 
 ## Index And Log
 
-Ingest 또는 Archive 후에는 색인과 로그를 갱신한다. Lint 후에는 수행한 수정 수와 남은 이슈를 `wiki/log.md`에 한 번 append한다.
+After Ingest or Archive, update the index and log. After Lint, append one log entry with the number of fixes and remaining issues.
 
-- `wiki/index.md`: topic별 article link, 한 줄 summary, Updated 날짜를 유지한다.
-- `wiki/log.md`: append-only로 남긴다.
+- `wiki/index.md`: Keep topic-level article links, one-line summaries, and Updated dates.
+- `wiki/log.md`: Append only.
 
 ```md
 ## YYYY-MM-DD | ingest | short-title
@@ -122,57 +119,57 @@ Ingest 또는 Archive 후에는 색인과 로그를 갱신한다. Lint 후에는
 
 ## Archive
 
-사용자가 답변을 Wiki에 저장하라고 명시하면 Query 결과를 새 wiki 문서로 저장한다.
+When the user explicitly asks to save an answer to the Wiki, save the Query result as a new wiki document.
 
-- 항상 새 문서로 저장하고 기존 지식 문서에 병합하지 않는다.
-- `Sources`에는 답변에 사용한 wiki 문서를 연결한다.
-- `Raw`는 쓰지 않는다.
-- `wiki/index.md` summary 앞에 `[Archived]`를 붙인다.
-- `wiki/log.md`에 `query | archived`를 남긴다.
+- Always create a new document; do not merge it into existing knowledge articles.
+- Link the wiki documents used by the answer in `Sources`.
+- Do not write a `Raw` field.
+- Prefix the `wiki/index.md` summary with `[Archived]`.
+- Add `query | archived` to `wiki/log.md`.
 
 ## Lint
 
-Ingest 또는 Archive 후에는 Lint를 수행한다.
+Run Lint after Ingest or Archive.
 
-자동 수정:
+Auto-fix:
 
-- index에 없는 wiki 문서 추가
-- 존재하지 않는 index 항목에 `[MISSING]` 표시
-- 단일 후보가 분명한 깨진 내부 링크 수정
-- 존재하지 않는 Raw link가 단일 후보로 복구 가능하면 수정
-- 같은 topic 안의 명백한 `See Also` 누락 보완
+- Add wiki documents missing from the index.
+- Mark index entries whose target does not exist with `[MISSING]`.
+- Fix broken internal links when there is one clear candidate.
+- Fix missing Raw links when there is one clear recovery candidate.
+- Add obvious missing `See Also` links within the same topic.
 
-보고만 할 것:
+Report only:
 
-- 출처 간 사실 충돌
-- 최신 source에 의해 낡은 주장
-- 고립 문서
-- 자주 언급되지만 독립 문서가 없는 개념
-- archive 이후 원문 지식이 크게 바뀐 문서
+- Fact conflicts between sources.
+- Claims outdated by newer sources.
+- Isolated documents.
+- Frequently referenced concepts without standalone documents.
+- Archived documents whose underlying source knowledge changed substantially.
 
-Lint 후 `wiki/log.md`에 수정 수와 남은 이슈를 기록한다.
+After Lint, append the fix count and remaining issues to `wiki/log.md`.
 
 ## Record Candidates
 
-개발, 디버깅, 리뷰, 배포 대응을 마치기 전에 아래에 해당하면 Ingest 후보로 본다.
+Before finishing development, debugging, review, or deployment-response work, treat these as Ingest candidates:
 
-- 운영 에러, 장애, 재현 어려운 버그, 고객 영향
-- 임시 제거, 우회, 롤백, feature flag, degrade 처리
-- 원인, 재현 조건, 장기 해결책, 공식 API 채택 여부가 미해결
-- 특정 구현을 제거, 유지, 보류하기로 한 결정
-- 안정성을 위해 기능 범위, UX, 성능, 관측 가능성 중 하나를 바꾼 tradeoff
-- 특정 릴리스, 의존성 업데이트, 재발 시점에 다시 봐야 하는 trigger
-- 재사용 가능한 프롬프트, 체크리스트, 조사 절차
+- Production errors, incidents, hard-to-reproduce bugs, or customer impact.
+- Temporary removals, workarounds, rollbacks, feature flags, or degraded behavior.
+- Unresolved causes, reproduction conditions, long-term fixes, or official API adoption.
+- Decisions to remove, keep, or defer a specific implementation.
+- Tradeoffs that changed feature scope, UX, performance, or observability for stability.
+- Triggers that require revisiting at a release, dependency update, or recurrence point.
+- Reusable prompts, checklists, or investigation procedures.
 
-사용자가 명시적으로 기록을 요청하면 Ingest한다. Agent가 후보를 발견했을 뿐이면 답변 말미에 제안하고, 사용자가 허용하거나 사전에 Wiki maintenance를 허용한 경우에만 쓴다. 확정하기 어려운 의사결정이나 개인/팀 컨벤션은 초안을 제안하고 확인을 받는다.
+If the user explicitly asks to record something, Ingest it. If the agent only notices a candidate, suggest it at the end of the response and write only if the user approves or prior Wiki maintenance permission exists. For uncertain decisions or personal/team conventions, propose a draft and ask for confirmation.
 
 ## Rules
 
-- Wiki를 맹신하지 않는다. 오래된 문서보다 현재 코드, 실행 결과, 최신 source를 우선한다.
-- 없는 히스토리와 출처를 만들지 않는다.
-- Query는 절대 파일을 쓰지 않는다.
-- `raw/`는 보존하고, 해석과 정리는 `wiki/`에 둔다.
-- 기존 `raw/` 파일은 삭제하거나 덮어쓰지 않는다.
-- 링크는 wiki 파일 내부에서는 현재 파일 기준 상대 경로, 대화에서는 project-root-relative 경로를 쓴다.
-- `wiki/` topic은 한 단계만 둔다.
-- 문서는 짧게 유지하고, 긴 원문은 raw에 둔다.
+- Do not trust Wiki knowledge blindly. Prefer current code, execution results, and newer sources over old documents.
+- Do not invent history or sources.
+- Query never writes files.
+- Preserve `raw/`; put interpretation and organization in `wiki/`.
+- Never delete or overwrite existing `raw/` files.
+- Use links relative to the current file inside wiki files; use project-root-relative links in conversation.
+- Keep `wiki/` topics one level deep.
+- Keep documents concise; put long source material in `raw/`.

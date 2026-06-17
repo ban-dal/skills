@@ -1,13 +1,27 @@
 ---
 name: orchestrate
-description: |
-  여러 독립 task를 fresh subagent들로 계획, 실행, spec review, code quality review까지 오케스트레이션하는 스킬이다.
-  Trigger: interview-me가 요구사항, 범위, 제약, 완료 기준을 정리한 직후 반드시 사용한다.
-  Trigger: 사용자가 implementation plan, task breakdown, 또는 여러 독립 작업으로 나뉜 명확한 spec을 이미 제공한 경우 사용한다.
-  Do not use: 단일 파일 수정, 작은 버그 수정, 오타/타입/CSS 수정, tightly coupled change, minimal diff 요청에는 사용하지 않는다.
+description: Plan and coordinate multi-task implementation across fresh subagents after requirements are clear, especially for provided plans, task breakdowns, or specs with independent workstreams.
 ---
 
 # /orchestrate — 서브 에이전트 오케스트레이션
+
+Use this skill after `interview-me` has clarified:
+- requirements
+- scope
+- constraints
+- completion criteria
+
+Use this skill when the user already provided:
+- an implementation plan
+- a task breakdown
+- a clear spec that can be split into independent tasks
+
+Do not use this skill for:
+- single-file edits
+- small bug fixes
+- typos, type fixes, CSS-only tweaks
+- tightly coupled changes
+- minimal-diff requests
 
 Execute plan by dispatching fresh subagent per task, with two-stage review after each: spec compliance review first, then code quality review.
 

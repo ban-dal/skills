@@ -1,102 +1,103 @@
 ---
 name: quality
-description: 코드를 생성하거나 수정할 때 사용합니다. 수정 전 방향, 영향도, 검증 절차를 제시하고 과도한 구현, 범위 밖 리팩토링, 불필요한 추상화를 방지합니다.
+description: Behavioral guidelines to reduce common LLM coding mistakes. Use when writing, reviewing, or refactoring code to avoid overcomplication, make surgical changes, surface assumptions, and define verifiable success criteria.
 ---
 
-# Guidelines
+# Quality
 
-LLM 코딩 에이전트가 흔히 저지르는 실수를 줄이기 위한 행동 지침입니다.
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
-**Tradeoff:** 이 지침은 속도보다 신중함을 우선합니다. 단순하고 사소한 작업에서는 과도하게 적용하지 말고, 상황에 맞게 판단하세요.
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
-## 1. 코드 작성 전에 먼저 생각하기 (Think Before Coding)
+## 1. Think Before Coding
 
-**[DO NOT]: 추측하지 마세요. 헷갈리는 부분을 숨기지 마세요. 트레이드오프를 드러내세요.**
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
 
-- 전제와 가정을 명시하세요.
-- 확실하지 않은 부분이 있다면 질문하세요.
-- 요청을 여러 방식으로 해석할 수 있다면, 조용히 하나를 선택하지 말고 가능한 대안을 제시하세요.
-- 더 단순한 접근이 있다면 먼저 말하세요.
-- 사용자의 요청이 과하거나 부적절해 보이면 필요한 경우 반대 의견을 제시하세요.
-- 이해되지 않는 부분이 있다면 멈추고, 무엇이 혼란스러운지 설명한 뒤 질문하세요.
-- 기능 추가나 문제 해결 요청에서 수정 범위가 클 것으로 판단되면 즉시 코드를 적용하지 마세요. 변경할 사항, 예상 영향 범위, 검증 방법을 먼저 사용자에게 알리고 승인을 받은 뒤 코드 작업을 진행하세요.
+## 2. Simplicity First
 
-## 2. 단순함을 우선하기 (Simplicity First)
+**Minimum code that solves the problem. Nothing speculative.**
 
-**문제를 해결하는 최소한의 코드만 작성하세요. 추측 기반의 확장은 하지 마세요.**
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
 
-다음을 피해야 합니다.
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
-- 요청받지 않은 기능 추가
-- 한 번만 쓰이는 코드를 위한 불필요한 추상화
-- 요구되지 않은 유연성, 확장성, 설정 가능성 추가
-- 실제로 발생할 수 없는 상황에 대한 과도한 에러 처리
-- 50줄로 해결 가능한 문제를 200줄로 구현하는 것
+## 3. Surgical Changes
 
-스스로에게 항상 질문하세요.
+**Touch only what you must. Clean up only your own mess.**
 
-**“시니어 엔지니어가 봤을 때 이 구현이 과하게 복잡하다고 느낄까?”**
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
 
-그렇다면 더 단순하게 다시 작성하세요.
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
 
-## 3. 필요한 부분만 정확히 수정하기 (Surgical Changes)
+The test: Every changed line should trace directly to the user's request.
 
-**수정해야 하는 부분만 건드리세요. 정리는 내가 만든 변경의 범위 안에서만 하세요.**
+## 4. Goal-Driven Execution
 
-기존 코드를 수정할 때는 다음을 지켜야 합니다.
+**Define success criteria. Loop until verified.**
 
-- 관련 없는 주변 코드, 주석, 포맷을 임의로 개선하지 마세요.
-- 고장 나지 않은 코드를 리팩터링하지 마세요.
-- 본인이 선호하는 방식이 아니더라도 기존 코드 스타일을 따르세요.
-- 관련 없는 죽은 코드나 개선 포인트를 발견했다면 삭제하지 말고 사용자에게 언급만 하세요.
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
 
-내 변경으로 인해 불필요해진 코드가 생겼다면 다음을 수행하세요.
+For multi-step tasks, state a brief plan:
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+```
 
-- 내 변경 때문에 더 이상 사용되지 않는 import, 변수, 함수는 제거하세요.
-- 기존에 이미 존재하던 미사용 코드나 죽은 코드는 요청받지 않았다면 제거하지 마세요.
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-판단 기준은 다음과 같습니다.
+## 5. Affected Flow Handoff
 
-**변경된 모든 줄은 사용자의 요청과 직접 연결되어 있어야 합니다.**
+**After code changes, tell the user what human flow still deserves manual verification.**
 
-## 4. 목표 중심으로 실행하기 (Goal-Driven Execution)
+Automated checks are necessary, but they are not always enough. Before the final response, inspect the diff and identify whether the change affects user-visible behavior, external contracts, submitted data, persisted data, or operational flows.
 
-**성공 기준을 정의하고, 검증될 때까지 반복하세요.**
+Include an **Affected Flows** section in the final response when the change touches any of these:
 
-요청을 검증 가능한 목표로 바꾸세요.
+- API request or response shape, submit payload fields, serialization, default values, or conditional payload logic.
+- Forms, save/submit/publish/checkout/upload/auth flows, permissions, notifications, or routing.
+- Backend contracts, database schema, migrations, feature flags, provider configuration, environment handling, or third-party integrations.
+- State transitions where tests pass but a real browser or end-to-end user path may still reveal regressions.
 
-예시:
+For each affected flow, provide a concise manual scenario:
 
-- “validation 추가” → “잘못된 입력에 대한 테스트를 작성하고, 해당 테스트가 통과하도록 구현한다.”
-- “버그 수정” → “버그를 재현하는 테스트를 먼저 작성하고, 해당 테스트가 통과하도록 수정한다.”
-- “X 리팩터링” → “리팩터링 전후로 기존 테스트가 모두 통과하는지 확인한다.”
+- **Action:** what a human should do.
+- **Expected:** what should happen if the change is correct.
+- **Edge:** a boundary case or regression-prone variant to try.
 
-여러 단계가 필요한 작업이라면 짧은 계획을 먼저 제시하세요.
+If no manual flow is meaningfully affected, say so briefly instead of inventing one.
 
-1. `[작업 단계]` → 검증: `[확인 방법]`
-2. `[작업 단계]` → 검증: `[확인 방법]`
-3. `[작업 단계]` → 검증: `[확인 방법]`
+Final responses after implementation should normally include:
 
-좋은 성공 기준은 에이전트가 독립적으로 반복 실행하고 검증할 수 있게 만듭니다. 반대로 “잘 동작하게 해줘”처럼 모호한 기준은 계속해서 추가 질문을 필요로 합니다.
+- What changed.
+- Automated verification run and result.
+- Affected flows and manual E2E scenarios, when applicable.
+- Unverified items or residual risks, if any.
 
-## 5. 수정 작업 전 판단 제시
+## Done Criteria
 
-사용자가 "수정", "개선", "린트 경고 해결", "에러 해결"과 같이 기존 코드를 바꾸는 작업을 요청했을 때, 특히 변경 영향이 작지 않거나 원인이 구조적일 수 있다면 바로 코드를 수정하지 않는다.
+This skill is working when:
 
-먼저 아래 세 가지를 제시한다.
-
-- 수정 방향: 어떤 접근이 가장 적절한지, 대안이 있다면 왜 선택/배제하는지 설명한다.
-- 영향도: 동작, API, 성능, 상태 관리, 메모리, 기존 사용처, 하위 컴포넌트에 미치는 영향을 설명한다.
-- 검증 절차: 필요한 테스트 추가 여부와 수동 확인 시나리오를 제시한다.
-
-수동 확인 시나리오는 각 케이스마다 아래를 포함한다.
-
-- 행동: 사용자가 어떤 조작을 해야 하는지 구체적으로 쓴다.
-- 기대: 그 조작 후 어떤 결과가 정상인지 쓴다.
-- 엣지: 깨지기 쉬운 경계 조건이나 회귀 가능성이 높은 조건을 포함한다.
-
-단, 오타 수정, 단순 import 정리, 명백한 타입 오류처럼 영향이 작고 해결책이 자명한 경우에는 과도한 분석을 생략하고 바로 수정할 수 있다.
-
-사용자가 방향에 동의하거나 "진행해줘"라고 하면, 제시한 범위 안에서만 수정한다.
+- Diffs are smaller and more directly tied to the request.
+- Clarifying questions happen before implementation rather than after mistakes.
+- Tests and checks prove the claim being made.
+- Payload, API, and user-flow changes are clearly handed off for human E2E verification.

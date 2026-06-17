@@ -16,6 +16,7 @@ npx skills@latest add ban-dal/skills
 | `/interview-me` | 구현 전 요구사항 명확화 — 필요한 질문을 하나씩 묻고 실행 가능한 Spec으로 정리 |
 | `/llm-wiki`     | LLM 개념 즉시 참조 — 모델 선택, 프롬프팅 기법, RAG                            |
 | `/orchestrate`  | 서브 에이전트 자율 위임 — plan, brainstorm, review                            |
+| `/agentic-work-log` | AI 코딩 작업 수행 기록 — 한국어 Markdown 작업 로그 작성 및 갱신          |
 
 ## Upstream
 

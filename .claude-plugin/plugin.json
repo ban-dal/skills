@@ -4,6 +4,7 @@
     "./skills/quality",
     "./skills/interview-me",
     "./skills/llm-wiki",
-    "./skills/orchestrate"
+    "./skills/orchestrate",
+    "./skills/agentic-work-log"
   ]
 }
