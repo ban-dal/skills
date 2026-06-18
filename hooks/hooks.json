@@ -1,0 +1,15 @@
+{
+  "PreToolUse": [
+    {
+      "matcher": "Bash",
+      "hooks": [
+        {
+          "type": "command",
+          "if": "Bash(gh pr create*)",
+          "statusMessage": "작업 로그 확인 중...",
+          "command": "recent=$(find \"${CLAUDE_PROJECT_DIR:-.}/.agentic-work-log\" -maxdepth 1 -name \"*.md\" -mmin -60 2>/dev/null | head -1); if [ -z \"$recent\" ]; then printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"PR 생성 전에 agentic-work-log 스킬로 작업 로그를 먼저 남기거나 갱신하세요(.agentic-work-log/). 로그 작성 후 PR 생성을 다시 시도하면 통과됩니다. (작업당 1회)\"}}'; fi"
+        }
+      ]
+    }
+  ]
+}

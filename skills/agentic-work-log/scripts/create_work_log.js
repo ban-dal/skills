@@ -25,12 +25,12 @@ const TEMPLATE = {
     }
   ],
   changes: {
-    added: ["새로 추가한 동작 또는 파일."],
+    added: ["새로 추가한 동작(필요 시 파일 경로 포함). 동작 중심으로 기술."],
     changed: ["변경한 동작."],
     fixed: ["수정한 문제."],
     removed: ["제거한 동작."]
   },
-  files: ["path/to/file: 변경 요약과 리뷰 진입점."],
+  files: ["path/to/file: 리뷰 시 먼저 볼 진입점과 확인 포인트. changes의 파일을 그대로 반복하지 말고, 리뷰가 필요한 핵심 파일만."],
   verification: ["검증 항목: 결과."],
   risks: ["알려진 한계, 가정, 미검증 영역."],
   followUps: ["선택적 후속 작업."],

@@ -1,5 +1,6 @@
 {
   "name": "ban-dal-skills",
+  "hooks": "./hooks/hooks.json",
   "skills": [
     "./skills/quality",
     "./skills/interview-me",

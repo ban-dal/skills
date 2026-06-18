@@ -1,6 +1,6 @@
 ---
 name: agentic-work-log
-description: Record AI coding work as Korean Markdown when the user asks to log, summarize, preserve task context, or update a prior work log. Use for Korean prompts such as "작업 로그 남겨줘", "기록해줘", "작업 내용 정리해줘", or "후속 변경도 같은 로그에 반영해줘"; update the same log for follow-up changes.
+description: Record AI coding work as Korean Markdown. Triggers — user asks to log/summarize/preserve task context ("작업 로그 남겨줘", "기록해줘", "정리해줘") or update a prior log; OR proactively, once, when a multi-step task hits a PR/branch-finish checkpoint (before `gh pr create`). Skip trivial single-file edits, mid-task steps, and read-only/Q&A turns; update the existing log instead of duplicating.
 ---
 # Agentic Work Log
 
@@ -16,6 +16,15 @@ This skill combines four patterns:
 - ADR-style decisions: context, options, decision, consequences.
 - Changelog-style curation: notable changes instead of raw diffs.
 - PR/Jira-ready summaries: purpose, code explanation, verification, and desired reviewer feedback.
+
+## Trigger Policy
+
+Auto-logging must fire exactly once at the right checkpoint, not indiscriminately. Producing a full log costs significant tokens (~20k), so over-triggering is the main failure mode to avoid.
+
+- Proactive checkpoint: invoke once when a multi-step coding task is about to create a PR or finish a branch (right before `gh pr create`, opening a PR, or merging/finishing a development branch).
+- Suppress when: the change is a trivial single-file edit, the turn is read-only/Q&A/planning, the task is still mid-flight, or a fresh log for the current task already exists. In those cases do not invoke.
+- One log per task: if a related log already exists, update it instead of creating a new file (see step 5). Never re-run the full log generation when an up-to-date log is already present.
+- A `PreToolUse` hook on `gh pr create` reminds the model to log first; treat that reminder as the trigger, create/update the log once, then proceed with the PR.
 
 ## Workflow
 
@@ -83,6 +92,7 @@ If `--out` is omitted, the script prints Markdown to stdout.
 - Do not paste long command output. Record the command name and result.
 - Mark unknown or unverified items as `기록되지 않음` or `실행하지 않음`.
 - Separate what changed from why the choice was made.
+- Keep the `변경 사항` and `파일` sections distinct to avoid duplication. `변경 사항` is a behavior-level changelog (what behavior was added/changed/fixed/removed and why it is visible); `파일` lists only review entry points (paths a reviewer should open first, with where-to-look guidance). Do not re-list every changed path in `파일`, and do not repeat the same per-file description in both sections. When a change is purely a new file with no separate behavior story, keep it in `변경 사항` and reference it in `파일` only if it is a primary review entry point.
 - Write decisions in a `맥락 -> 결정 -> 대안 -> 결과` flow rather than long exposition.
 - Group changes as `추가`, `변경`, `수정`, and `제거` when useful; omit empty categories.
 - When updating an existing log, preserve previous entries. Unless correcting factual errors, append new review requests, additional decisions, changed files, verification, risks, and follow-ups instead of rewriting history.
