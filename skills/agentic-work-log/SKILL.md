@@ -30,7 +30,7 @@ Auto-logging must fire exactly once at the right checkpoint, not indiscriminatel
 
 1. Collect task context before writing the log:
    - User prompts. Preserve the original text when it is short.
-   - Main-model questions and user answers when `interview-me` was used.
+   - Main-model questions and user answers when a clarifying/brainstorming skill was used.
    - Skills, MCP/app tools, shell commands, scripts, and major external tools used.
    - Changed files, important code paths inspected, and tests or checks run.
 2. Summarize for fast future review:
