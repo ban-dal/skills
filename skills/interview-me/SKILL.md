@@ -90,3 +90,14 @@ description: Clarify intent, requirements, constraints, scope, and acceptance cr
 - 아직 남은 열린 질문
 
 마지막에는 전체 대화록이 아니라 결정사항과 열린 질문만 요약한다.
+
+## 다음 단계 handoff
+
+요약 뒤에는 사용자의 의도에 맞는 다음 단계를 짧게 제안한다.
+
+- 제품/기능 요구사항 문서가 필요하면 `to-prd`로 이어진다.
+- 독립적으로 집을 수 있는 작업 항목이 필요하면 `to-issues`로 이어진다.
+- 구현 가능한 multi-step 계획이 필요하면 `writing-plans`로 이어진다.
+
+열린 질문이 구현 계획의 전제를 흔들 정도로 크면 plan 작성을 시작하지 말고,
+먼저 어떤 질문이 막고 있는지 말한다.
