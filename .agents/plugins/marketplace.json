@@ -1,0 +1,20 @@
+{
+  "name": "ban-dal",
+  "interface": {
+    "displayName": "ban-dal"
+  },
+  "plugins": [
+    {
+      "name": "ban-dal-skills",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ban-dal-skills"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

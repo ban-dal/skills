@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "description": "Codex와 Claude Code 등 AI 코딩 에이전트를 위한 스킬 컬렉션",
   "author": {
-    "name": "ban-dal"
+    "name": "ban-dal",
+    "url": "https://github.com/ban-dal"
   },
   "homepage": "https://github.com/ban-dal/skills",
   "repository": "https://github.com/ban-dal/skills",
+  "license": "MIT",
   "keywords": [
     "skills",
     "codex",
@@ -28,7 +30,6 @@
     "defaultPrompt": [
       "quality 스킬로 코드 품질을 점검해줘.",
       "short-code 스킬로 가장 짧게 구현해줘.",
-      "구현 전에 요구사항을 명확히 정리해줘.",
       "이번 AI 코딩 작업 로그를 한국어로 남겨줘."
     ],
     "brandColor": "#2563EB"
