@@ -10,12 +10,12 @@ Create a compact, review-friendly work log for an AI coding task. The instructio
 
 Prefer structured summaries, decision evidence, and generated templates over long free-form transcripts.
 
-This skill combines four patterns:
+The output must combine:
 
-- Superpowers-style finish summaries: changed files, validation, risks, and follow-ups.
-- ADR-style decisions: context, options, decision, consequences.
-- Changelog-style curation: notable changes instead of raw diffs.
-- PR/Jira-ready summaries: purpose, code explanation, verification, and desired reviewer feedback.
+- Finish summary: changed files, validation, risks, and follow-ups.
+- Decision notes: context, options, decision, and consequences.
+- Curated changelog: notable changes instead of raw diffs.
+- Reviewer draft: purpose, code explanation, verification, and desired feedback.
 
 ## Workflow
 
@@ -31,7 +31,7 @@ This skill combines four patterns:
    - Verification results, including commands, pass/fail status, and checks not run.
    - Remaining risks, follow-ups, and assumptions.
    - Reviewer-request notes, PR comment draft, or Jira comment draft.
-3. Write the final record as a Markdown file (`.md`). Use `scripts/create_work_log.js` and temporary JSON input only to avoid manually repeating Markdown sections.
+3. Write the final record as a Markdown file (`.md`). Use `scripts/create_work_log.js` and temporary JSON input only to avoid manually repeating Markdown sections. Put temporary JSON under the workspace temp area or delete it after the Markdown is written.
 4. Follow the Storage Policy.
 5. For follow-up review or fix requests on the same task, update the existing log instead of creating a new file. Create a new file only when a different task starts, the user explicitly asks for a new record, or no related log can be found.
 
@@ -77,9 +77,7 @@ If `--out` is omitted, the script prints Markdown to stdout.
 - Store logs in `.agentic-work-log/` by default and verify that the folder is gitignored.
 - Section headings and generated fallback phrases must be Korean.
 - Preserve the original language of user prompts. Summarize long prompt chains in Korean.
-- Keep repeated or long text from hiding the useful information. Put summaries in the body and reference source paths or raw files only when needed.
-- When the same content repeats, keep the first occurrence and final decision; summarize middle repetitions by count or scope.
-- Preserve short prompts verbatim. Compress long prompt chains to core requirements, constraints, and changed decisions.
+- Preserve short prompts verbatim; compress repeated or long prompt chains to core requirements, constraints, changed decisions, and final outcomes.
 - Do not paste long command output. Record the command name and result.
 - Mark unknown or unverified items as `기록되지 않음` or `실행하지 않음`.
 - Separate what changed from why the choice was made.

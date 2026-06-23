@@ -5,19 +5,15 @@ description: Behavioral guidelines to reduce common LLM coding mistakes. Use whe
 
 # Quality
 
-Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
-
-**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
-
 ## 1. Think Before Coding
 
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
+- State assumptions that materially affect the solution.
+- If multiple plausible interpretations would lead to different implementations, present them and pick the safest reversible default.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+- Ask only when a wrong assumption would be costly, irreversible, or impossible to verify locally.
 
 ## 2. Simplicity First
 
@@ -52,9 +48,9 @@ The test: Every changed line should trace directly to the user's request.
 **Define success criteria. Loop until verified.**
 
 Transform tasks into verifiable goals:
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
+- "Add validation" -> "Check invalid inputs are rejected"
+- "Fix the bug" -> "Reproduce the failure, then prove it no longer happens"
+- "Refactor X" -> "Run the smallest check that proves behavior stayed the same"
 
 For multi-step tasks, state a brief plan:
 ```
@@ -62,8 +58,6 @@ For multi-step tasks, state a brief plan:
 2. [Step] → verify: [check]
 3. [Step] → verify: [check]
 ```
-
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
 ## 5. Affected Flow Handoff
 
@@ -86,18 +80,12 @@ For each affected flow, provide a concise manual scenario:
 
 If no manual flow is meaningfully affected, say so briefly instead of inventing one.
 
-Final responses after implementation should normally include:
+Final responses after implementation should report the verification run and any residual risk.
 
-- What changed.
-- Automated verification run and result.
-- Affected flows and manual E2E scenarios, when applicable.
-- Unverified items or residual risks, if any.
+## Before Finishing
 
-## Done Criteria
+Confirm that:
 
-This skill is working when:
-
-- Diffs are smaller and more directly tied to the request.
-- Clarifying questions happen before implementation rather than after mistakes.
-- Tests and checks prove the claim being made.
-- Payload, API, and user-flow changes are clearly handed off for human E2E verification.
+- Every changed line traces to the user's request.
+- Verification proves the claim being made, or the final response names what was not checked.
+- Payload, API, and user-flow changes are handed off for human E2E verification when needed.
