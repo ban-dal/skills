@@ -18,7 +18,7 @@
   "interface": {
     "displayName": "ban-dal Skills",
     "shortDescription": "코딩 에이전트 워크플로우를 돕는 한국어 친화 스킬 모음입니다.",
-    "longDescription": "Codex, Claude Code 등 AI 코딩 에이전트에서 사용할 수 있는 실용 스킬 컬렉션입니다. 코드 품질 점검, 요구사항 인터뷰, LLM 위키 조회, 작업 오케스트레이션, 한국어 작업 로그 작성을 다룹니다.",
+    "longDescription": "Codex, Claude Code 등 AI 코딩 에이전트에서 사용할 수 있는 실용 스킬 컬렉션입니다. 코드 품질 점검, 짧고 직접적인 구현, 요구사항 인터뷰, LLM 위키 조회, 작업 오케스트레이션, 한국어 작업 로그 작성을 다룹니다.",
     "developerName": "ban-dal",
     "category": "Productivity",
     "capabilities": [
@@ -27,6 +27,7 @@
     "websiteURL": "https://github.com/ban-dal/skills",
     "defaultPrompt": [
       "quality 스킬로 코드 품질을 점검해줘.",
+      "short-code 스킬로 가장 짧게 구현해줘.",
       "구현 전에 요구사항을 명확히 정리해줘.",
       "이번 AI 코딩 작업 로그를 한국어로 남겨줘."
     ],
