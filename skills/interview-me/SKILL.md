@@ -1,6 +1,8 @@
 ---
 name: interview-me
-description: Clarify intent, requirements, constraints, scope, and acceptance criteria before feature additions, behavior changes, new components, architecture work, or ambiguous implementation.
+description: |
+  기능 추가, 기능 변경, 새 컴포넌트 작성, 기존 동작 수정, 아키텍처 변경, 작업 범위 결정 전에는 반드시 사용한다.
+  구현, 코드 수정, 해결책 제시를 시작하기 전에 사용자의 의도, 요구사항, 제약, 완료 기준을 먼저 확인한다.
 ---
 
 # /interview-me — 요구사항 인터뷰

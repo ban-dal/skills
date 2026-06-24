@@ -1,6 +1,9 @@
 ---
 name: llm-wiki
-description: Search, ingest, organize, archive, and quality-check the local LLM Wiki knowledge base. Use when the user asks to use wiki knowledge, rely on past context, record reusable decisions, troubleshooting, workflows, or prompts, including Korean triggers such as "위키에서 찾아봐", "예전에 정리한 것 기준으로", "add to wiki", "LLM wiki", or "기록해줘".
+description: |
+  로컬 LLM Wiki(~/Documents/wiki)를 지식베이스로 조회·수집·정리한다.
+  작업이 과거 맥락·의사결정·트러블슈팅·운영 장애에 의존하거나 "위키에서 찾아봐", "LLM wiki"라고 하면 기존 지식을 탐색한다(Query).
+  재사용 가치가 있는 맥락을 발견하거나 "add to wiki", "기록해줘"라고 하면 수집한다(Ingest).
 ---
 
 # /llm-wiki

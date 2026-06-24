@@ -1,6 +1,6 @@
 ---
 name: quality
-description: Behavioral guidelines to reduce common LLM coding mistakes. Use when writing, reviewing, or refactoring code to avoid overcomplication, make surgical changes, surface assumptions, and define verifiable success criteria.
+description: 코드를 생성하거나 수정할 때 사용합니다. 과도한 구현, 범위 밖 리팩토링, 불필요한 추상화를 방지합니다.
 ---
 
 # Quality

@@ -1,6 +1,8 @@
 ---
 name: agentic-work-log
-description: Record AI coding work as Korean Markdown when the user asks to log, summarize, preserve task context, or update a prior work log. Use for Korean prompts such as "작업 로그 남겨줘", "기록해줘", "작업 내용 정리해줘", or "후속 변경도 같은 로그에 반영해줘"; update the same log for follow-up changes.
+description: |
+  AI coding 작업 수행 시 작업 완료 Markdown 기록을 남긴다.
+  같은 작업의 후속 수정 요청은 새 파일을 만들지 않고 기존 기록을 갱신한다.
 ---
 # Agentic Work Log
 
