@@ -1,4 +1,0 @@
-interface:
-  display_name: "Short Code"
-  short_description: "Keep coding changes small and direct"
-  default_prompt: "Use $short-code to solve this with the shortest maintainable code path."
