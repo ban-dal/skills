@@ -1,0 +1,31 @@
+{
+  "name": "ban-dal-skills",
+  "owner": {
+    "name": "ban-dal",
+    "email": "bandal2dev@gmail.com"
+  },
+  "metadata": {
+    "description": "ban-dal의 Workflow Engineering 스킬 모음",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "ban-dal-skills",
+      "description": "Workflow Engineering 스킬 — 작업 분류 후 실행 계획(Workflow)을 설계하는 메타 라우터와 유형별 전용 스킬",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/agentic-work-log",
+        "./skills/llm-wiki",
+        "./skills/workflow/workflow-architect",
+        "./skills/workflow/implement-feature",
+        "./skills/workflow/bugfix",
+        "./skills/workflow/refactor",
+        "./skills/workflow/review",
+        "./skills/workflow/test-generator",
+        "./skills/workflow/performance",
+        "./skills/workflow/migration"
+      ]
+    }
+  ]
+}
