@@ -20,7 +20,7 @@ description: |
 공통 원칙은 한 곳에만 있다. 설계 전에 읽는다:
 
 - [`references/principles.md`](references/principles.md) — 철학, 순서 규칙, Task 분해 기준, 리뷰·검증 메뉴
-- [`references/agent-strategy.md`](references/agent-strategy.md) — 의존성 분류, 병렬 판단, Agent Task Card
+- [`references/agent-strategy.md`](references/agent-strategy.md) — 의존성 분류, 병렬 판단, Orchestration Gate, Agent Task Card
 - [`references/output-contract.md`](references/output-contract.md) — Workflow 출력 형식
 
 ## 역할

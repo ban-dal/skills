@@ -20,7 +20,7 @@ description: |
 
 - [`../workflow-architect/references/clarification-gate.md`](../workflow-architect/references/clarification-gate.md) — 0단계 명확화 게이트(domain-modeling → grilling)
 - [`../workflow-architect/references/principles.md`](../workflow-architect/references/principles.md) — 순서 규칙, Task 분해 기준, 검증 메뉴
-- [`../workflow-architect/references/agent-strategy.md`](../workflow-architect/references/agent-strategy.md) — 병렬 판단, Agent Task Card
+- [`../workflow-architect/references/agent-strategy.md`](../workflow-architect/references/agent-strategy.md) — 병렬 판단, Orchestration Gate, Agent Task Card
 - [`../workflow-architect/references/output-contract.md`](../workflow-architect/references/output-contract.md) — 출력 형식
 
 ## 이 유형의 고유 절차

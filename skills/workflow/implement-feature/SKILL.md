@@ -20,7 +20,7 @@ description: |
 
 - [`../workflow-architect/references/clarification-gate.md`](../workflow-architect/references/clarification-gate.md) — 0단계 명확화 게이트(domain-modeling → grilling)
 - [`../workflow-architect/references/principles.md`](../workflow-architect/references/principles.md) — 순서 규칙, Task 분해 기준, 검증 메뉴
-- [`../workflow-architect/references/agent-strategy.md`](../workflow-architect/references/agent-strategy.md) — 병렬 판단, Agent Task Card
+- [`../workflow-architect/references/agent-strategy.md`](../workflow-architect/references/agent-strategy.md) — 병렬 판단, Orchestration Gate, Agent Task Card
 - [`../workflow-architect/references/output-contract.md`](../workflow-architect/references/output-contract.md) — 출력 형식
 
 ## 이 유형의 고유 절차
@@ -37,7 +37,7 @@ description: |
 3. **계층별 Task 분리** — 기능을 보통 데이터/API · UI · 상태 · 검증 계층으로 쪼갠다. 각 Task에 완료 기준과 예상 변경 파일 범위.
    - *완료*: 모든 Task가 분해 기준(principles.md)을 만족한다.
 4. **계약 우선 병렬화 판단** — API/타입 계약을 먼저 고정하면 서버·UI를 병렬로 분리할 수 있는지 본다.
-   - *완료*: 병렬/순차/머지-후 분류 + 병렬 작업의 Agent Task Card.
+   - *완료*: 병렬/순차/머지-후 분류 + Orchestration Mode 여부 + 위임 또는 병렬 작업의 Agent Task Card.
 5. **완료·검증 기준** — 수용 기준 기반 통합 테스트를 검증으로. 권한·입력 변경이면 보안 확인 추가.
    - *완료*: "검증 완료" 기준이 수용 기준과 연결돼 있다.
 
@@ -46,6 +46,7 @@ description: |
 - **기존 테스트가 없는가?** → 테스트 골격 Task를 선행 의존성으로 둔다.
 - **외부 API/다른 팀에 의존하는가?** → 계약(mock)을 먼저 합의해 양쪽을 병렬화한다.
 - **공유 라우팅·설정을 건드리는가?** → 그 배선 작업을 "머지 후" Task로 격리한다.
+- **새 플로우가 라우팅·상태·API·테스트 중 2개 이상을 함께 바꾸는가?** → `agent-strategy.md`의 Orchestration Gate를 적용한다.
 
 ## 출력
 
