@@ -14,3 +14,6 @@ npx skills@latest add ban-dal/skills
 | --------------- | ----------------------------------------------------------------------------- |
 | `/agentic-work-log` | AI 코딩 작업 수행 기록 — 한국어 Markdown 작업 로그 작성 및 갱신          |
 | `/llm-wiki` | LLM Wiki 지식 조회, 프로젝트 메모리 기록, 재사용 지식 정리          |
+| `/workflow-architect` | 개발 작업 분류 후 Workflow(실행 계획) 설계 — 메타 라우터, 공통 원칙 소유 |
+| `/implement-feature` | 기능 구현 Workflow 설계 — 요구 분석·계층 분리·계약 우선 병렬화·검증 |
+| `/bugfix` | 버그 수정 Workflow 설계 — 재현·원인 격리·최소 수정·재발 방지 검증 |
