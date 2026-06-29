@@ -40,11 +40,11 @@ description: |
 |---|---|---|
 | 기능 구현 | `implement-feature` | 전용 |
 | 버그 수정 | `bugfix` | 전용 |
-| 리팩터링 | `refactor` | 미작성 → generic |
-| 코드 리뷰 | `review` | 미작성 → generic |
-| 테스트 작성 | `test-generator` | 미작성 → generic |
-| 성능 개선 | `performance` | 미작성 → generic |
-| 마이그레이션 | `migration` | 미작성 → generic |
+| 리팩터링 | `refactor` | 전용 |
+| 코드 리뷰 | `review` | 전용 |
+| 테스트 작성 | `test-generator` | 전용 |
+| 성능 개선 | `performance` | 전용 |
+| 마이그레이션 | `migration` | 전용 |
 | 미분류 | — | generic |
 
 "미작성 → generic"은 전용 Skill이 아직 없으니, 공통 원칙으로 Workflow를 직접 설계하라는 뜻이다.
