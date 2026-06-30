@@ -15,7 +15,7 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/agentic-work-log"
+        "./skills/work-logger"
       ]
     }
   ]
