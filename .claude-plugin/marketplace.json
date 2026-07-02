@@ -15,7 +15,8 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/work-logger"
+        "./skills/work-logger",
+        "./skills/pr-template"
       ]
     }
   ]
