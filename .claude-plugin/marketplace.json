@@ -16,7 +16,8 @@
       "strict": false,
       "skills": [
         "./skills/work-logger",
-        "./skills/pr-template"
+        "./skills/pr-template",
+        "./skills/orchestrator-setup"
       ]
     }
   ]
