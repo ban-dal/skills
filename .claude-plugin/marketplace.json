@@ -17,7 +17,8 @@
       "skills": [
         "./skills/work-logger",
         "./skills/pr-template",
-        "./skills/orchestrator-setup"
+        "./skills/orchestrator-setup",
+        "./skills/dev-briefing"
       ]
     }
   ]
