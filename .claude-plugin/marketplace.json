@@ -5,19 +5,19 @@
     "email": "bandal2dev@gmail.com"
   },
   "metadata": {
-    "description": "ban-dal의 AI 코딩 작업 기록 스킬 모음",
+    "description": "ban-dal의 AI 코딩 에이전트 스킬 모음",
     "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "ban-dal-skills",
-      "description": "AI 코딩 작업 수행 기록을 한국어 Markdown으로 작성하고 갱신하는 스킬",
+      "description": "AI 코딩 에이전트용 스킬 모음 — 작업 라우팅, 개발 착수 프로토콜, 작업 기록, PR 템플릿",
       "source": "./",
       "strict": false,
       "skills": [
         "./skills/work-logger",
         "./skills/pr-template",
-        "./skills/orchestrator-setup",
+        "./skills/orchestrator",
         "./skills/dev-briefing"
       ]
     }
