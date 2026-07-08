@@ -1,6 +1,6 @@
 ---
 name: pr-template
-description: PR을 생성하거나 머지 요청ㅇ르 올릴 때. 모든 PR은 아래 동일한 구조와 규칙으로 작성한다.
+description: PR을 생성하거나 머지 요청을 올릴 때. 모든 PR은 아래 동일한 구조와 규칙으로 작성한다.
 ---
 
 # PR Template
