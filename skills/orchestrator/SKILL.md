@@ -47,8 +47,9 @@ description: 작업 라우팅 게이트. 기능 구현·버그 수정·리팩토
 
 ## Codex 위임 규약
 
-- 모델과 effort는 지정하지 않는다 — 지정하지 않으면 Codex가 스스로 고른다.
-  사용자가 특정 모델을 명시적으로 요구할 때만 `--model`을 붙인다.
+- 모델과 effort를 명시한다 — 기본값 `--model gpt-5.6-terra --effort high`,
+  모델 선택 기준은 `references/codex-implementer.md`의 스폰 명령 표를 따른다.
+  effort는 `high` 고정 — 플랜은 이미 확정됐으므로 그 이상은 낭비다.
 - 브리프는 `references/codex-implementer.md`대로 구성한다 — 구현 규약 전문 + 작업 정보.
 - 위임 전에 브리프의 전제를 검증한다: 변경 파일 목록과 참조 경로가 실재하는지,
   수용 기준이 현재 코드와 맞는지. Codex는 브리프에 적힌 것만 검증한다 —

@@ -3,6 +3,26 @@ name: codex-implementer
 description: Codex에 구현을 위임할 때(/codex:rescue --background) 브리프에 그대로 포함할 구현 규약.
 ---
 
+# 스폰 명령 — 모델과 effort를 명시한다
+
+```
+/codex:rescue --background --model <모델> --effort <effort> <브리프 전문>
+```
+
+플랜은 메인 세션(Fable)이 이미 확정했고 Codex는 실행만 하므로, 판단력보다
+**플랜 충실도와 코드 품질** 기준으로 모델을 고른다. effort는 `high` 고정 —
+설계 판단이 남아 있지 않으므로 `xhigh`는 낭비다.
+
+| 상황 | 명령 |
+|---|---|
+| **기본값** — 보통 규모의 기능·버그 수정·리팩토링 | `/codex:rescue --background --model gpt-5.6-terra --effort high <브리프>` |
+| 소규모·기계적 변경 — 파일 1~2개, 패턴이 브리프에 그대로 있음 | `/codex:rescue --background --model gpt-5.6-luna --effort high <브리프>` |
+| 대규모·관통 구현 — 파일 다수, 긴 브리프, 파일 간 일관성이 관건 | `/codex:rescue --background --model gpt-5.6-sol --effort high <브리프>` |
+
+- `--background`는 Claude Code 쪽 실행 플래그, `--model`/`--effort`는 Codex 런타임
+  선택 플래그다. 둘 다 브리프 텍스트 앞에 두고, 자연어 브리프에 섞지 않는다.
+- `--resume`으로 같은 스레드에 돌려보낼 때는 모델과 effort를 바꾸지 않는다.
+
 # 구현 규약 — 브리프에 아래 전문을 그대로 포함한다
 
 ```text
