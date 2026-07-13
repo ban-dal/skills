@@ -19,13 +19,13 @@ description: 작업 라우팅 게이트. 기능 구현·버그 수정·리팩토
 | 작업 | 담당 | 방법 |
 |---|---|---|
 | 계획·브리핑·diff 리뷰·통합·소규모 수정(고칠 곳 3곳 이하) | 메인 세션 | 직접 |
-| 코드베이스 탐색·조사 | Explore 서브에이전트 | Agent tool |
-| **구현 (기본값)** — 기능, 버그 수정, 리팩토링 | Codex | `/codex:rescue --background` |
+| 코드베이스 탐색·조사 | Explore 서브에이전트 | Agent tool ( 반드시 model, effort 를 명시할 것 ) |
+| **구현 (기본값)** — 기능, 버그 수정, 리팩토링 | Codex | `references/codex-implementer.md` |
 | 아키텍처·난해한 디버깅의 세컨드 오피니언 | deep-reasoner (opus, high) | `agents/deep-reasoner.md` |
 | 대량 기계 작업(일괄 rename·포맷팅) — 결과물 코드 구조가 무관할 때만, 마지막 수단 | fast-worker (sonnet, medium) | `agents/fast-worker.md` |
 
-요청의 모든 하위 작업이 표의 한 행에 배정되면 라우팅이 끝난 것이고, 그때 실행을
-시작한다. 복합 요청의 기본 흐름: 탐색(Explore) → 브리프 → 구현(Codex) → diff 리뷰(메인).
+요청의 모든 하위 작업이 표의 한 행에 배정되면 라우팅이 끝난 것이고, 그때 실행을 시작한다.
+복합 요청의 기본 흐름: 탐색(Explore) → 브리프 → 구현(Codex) → diff 리뷰(메인).
 
 ## 병렬 위임
 
