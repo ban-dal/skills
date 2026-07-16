@@ -1,7 +1,7 @@
 ---
 name: fast-worker
 description: Use only as a last resort, for bulk mechanical work where the resulting code structure does not matter — mass renames, applying formatting, generated boilerplate. Anything involving structural judgment goes to an implementation subagent instead.
-model: gpt-5.6-luna
+model: sonnet
 effort: medium
 ---
 
