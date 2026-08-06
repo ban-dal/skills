@@ -14,4 +14,4 @@ npx skills@latest add ban-dal/skills
 | --- | --- |
 | `/pr-template` | diff·커밋·검증 로그와 저장소 규칙을 근거로 PR 작성 |
 | `/dev-briefing` | 구현 결과를 바꿀 수 있는 불확실성과 고위험 결정만 착수 전에 확인 |
-| `/orchestrator` | 사용자가 요청한 병렬 작업·독립 검토·다중 에이전트 협업을 조율 |
+| `/orchestrator` | 메인이 설계·계획·통합을 맡고 명확한 실행 단위를 하위 에이전트에 위임 |
